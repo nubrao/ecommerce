@@ -281,9 +281,9 @@ docker compose logs -f [service-name]
 
 ### Individual Services
 See respective README files in each service directory:
-- [ecommerce-app/README.md](./ecommerce-app/README.md)
-- [checkout-app/README.md](./checkout-app/README.md)
-- [ecommerce-proxy/README.md](./ecommerce-proxy/README.md)
+- [ecommerce-app/README.md](https://github.com/nubrao/ecommerce-app/blob/133cea464b2f314c874221fcf71737be8102218b/README.md)
+- [checkout-app/README.md](https://github.com/nubrao/checkout-app/blob/6b8334a7575788a8d239678a00951a67a2b4a005/README.md)
+- [ecommerce-proxy/README.md](https://github.com/nubrao/ecommerce-proxy/blob/f810ac301a44a7252db785630733b258d1c53821/README.md)
 
 ## 🔒 Environment Setup
 
