@@ -2,8 +2,6 @@
 
 A modern e-commerce platform built using microfrontend architecture with Next.js and Node.js.
 
-![Architecture Diagram](./docs/architecture.png)
-
 ## 🚀 Features
 
 - Microfrontend architecture
