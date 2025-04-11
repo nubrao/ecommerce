@@ -1,0 +1,65 @@
+services:
+  ecommerce-app:
+    build:
+      context: ./ecommerce-app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_PROXY_URL=http://localhost:8080
+      - NEXT_PUBLIC_CHECKOUT_APP_URL=http://localhost:8080/checkout
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://0.0.0.0:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  checkout-app:
+    build:
+      context: ./checkout-app
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - HOSTNAME=0.0.0.0
+      - PORT=3001
+      - NEXT_PUBLIC_MAIN_APP_URL=http://localhost:8080
+      - NEXT_PUBLIC_PROXY_URL=http://localhost:8080
+      - NEXT_PUBLIC_CHECKOUT_URL=http://localhost:8080/checkout
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://0.0.0.0:3001"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  ecommerce-proxy:
+    build:
+      context: ./ecommerce-proxy
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - HOSTNAME=0.0.0.0
+      - SESSION_SECRET=your-secret-key
+      - NODE_ENV=development
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:8080
+    networks:
+      - app-network
+    depends_on:
+      ecommerce-app:
+        condition: service_healthy
+      checkout-app:
+        condition: service_healthy
+
+networks:
+  app-network:
+    driver: bridge
