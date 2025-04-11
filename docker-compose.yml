@@ -7,16 +7,15 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_PROXY_URL=http://localhost:8080
-      - NEXT_PUBLIC_CHECKOUT_APP_URL=http://localhost:8080/checkout
+      - NEXT_PUBLIC_PROXY_URL=http://ecommerce-proxy:8080
+      - NEXT_PUBLIC_CHECKOUT_APP_URL=http://ecommerce-proxy:8080/checkout
+    volumes:
+      - ./ecommerce-app:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://0.0.0.0:3000"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 40s
 
   checkout-app:
     build:
@@ -26,19 +25,16 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=development
-      - HOSTNAME=0.0.0.0
-      - PORT=3001
-      - NEXT_PUBLIC_MAIN_APP_URL=http://localhost:8080
-      - NEXT_PUBLIC_PROXY_URL=http://localhost:8080
-      - NEXT_PUBLIC_CHECKOUT_URL=http://localhost:8080/checkout
+      - NEXT_PUBLIC_MAIN_APP_URL=http://ecommerce-proxy:8080
+      - NEXT_PUBLIC_PROXY_URL=http://ecommerce-proxy:8080
+      - NEXT_PUBLIC_CHECKOUT_URL=http://ecommerce-proxy:8080/checkout
+    volumes:
+      - ./checkout-app:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://0.0.0.0:3001"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 40s
 
   ecommerce-proxy:
     build:
@@ -48,17 +44,15 @@ services:
       - "8080:8080"
     environment:
       - PORT=8080
-      - HOSTNAME=0.0.0.0
       - SESSION_SECRET=your-secret-key
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:8080,http://ecommerce-app:3000,http://checkout-app:3001
       - NODE_ENV=development
-      - CORS_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:8080
+    volumes:
+      - ./ecommerce-proxy:/app
+      - /app/node_modules
+    command: npm run dev
     networks:
       - app-network
-    depends_on:
-      ecommerce-app:
-        condition: service_healthy
-      checkout-app:
-        condition: service_healthy
 
 networks:
   app-network:
