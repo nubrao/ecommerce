@@ -241,15 +241,15 @@ docker compose logs -f --timestamps
 
 ```
 ecommerce/
-├── ecommerce-app/     # Main shopping application (github.com/nubrao/ecommerce-app)
+├── ecommerce-app/     # Main shopping application (https://github.com/nubrao/ecommerce-app)
 │   ├── src/           # Source files
 │   ├── public/        # Static files
 │   └── Dockerfile     # Container configuration
-├── checkout-app/      # Checkout application (github.com/nubrao/checkout-app)
+├── checkout-app/      # Checkout application (https://github.com/nubrao/checkout-app)
 │   ├── src/           # Source files
 │   ├── public/        # Static files
 │   └── Dockerfile     # Container configuration
-├── ecommerce-proxy/   # API Gateway/BFF (github.com/nubrao/ecommerce-proxy)
+├── ecommerce-proxy/   # API Gateway/BFF (https://github.com/nubrao/ecommerce-proxy)
 │   ├── src/           # Source files
 │   └── Dockerfile     # Container configuration
 ├── docker-compose.yml # Services orchestration
@@ -325,13 +325,6 @@ cd ecommerce-app && npm test
 cd ../checkout-app && npm test
 cd ../ecommerce-proxy && npm test
 ```
-
-## 📈 Health Checks
-
-All services implement health checks accessible via:
-- Main App: http://localhost:3000/health
-- Checkout: http://localhost:3001/health
-- Proxy: http://localhost:8080/health
 
 ## 🤝 Contributing
 
